@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Page Title</title>
+
+	<!-- Responsive friendly viewport settings -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Style sheet link -->
+	<link href="codes/main.css" rel="stylesheet" media="all">
+
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+	<script src="codes/jquery.min.js" type="text/javascript"></script>
+  <script src="codes/rivets.bundled.min.js" type="text/javascript"></script>
+</head>
+<body id="data">
+
+	<section>
+		<h1>Your True Hourly Cost</h1>
+		<h3>Your Hourly Wage is : ${data.hourly_wage}</h3>
+		<input type="number" rv-value="data.hourly_wage">
+    <p>Heres some advice</p>
+	</section>
+
+	<section>
+	 	<h1>Your purchases</h1>
+  		<div rv-each-purchase="data.purchases">
+  			<input rv-value="purchase.name" type="text"> 
+        $ <input rv-value="purchase.price" type="number"> 
+  			Type : <input rv-value="purchase.type" type="text"> 
+  		</div>
+	</section>
+
+	<section>
+	 	<h1>Time spent</h1>
+    <button onclick="calculate_hours()">Calculate Time Spent</button>
+    <p>{data.total_hours_spent} hours of your life for ${data.total_cost} worth of stuff. In one working day you would make ${data.money_earned_in_one_day}</p>
+	</section>
+
+
+<script>
+
+    var data = {
+    hourly_wage: 20,
+    money_earned_in_one_day: 0,
+
+    total_hours_spent: 0,
+    total_cost: 0,
+
+    purchases: [
+      {
+        name: 'lollipop',
+        price: 0.5,
+        type: 'test'
+      },
+      {
+        name: 'teakettle',
+        price: 14.95,
+        type: 'test'
+      },
+      {
+        name: 'magic stick',
+        price: 89.12,
+        type: 'test'
+      },
+      {
+        name: 'low rider',
+        price: 900,
+        type: 'test'
+      },
+      {
+        name: 'champagne',
+        price: 45,
+        type: 'test'
+      }
+    ]};
+
+  rivets.bind($('#data'), {data: data});
+
+  function calculate_hours(){
+    data.total_hours_spent = getTotalCost() / data.hourly_wage;
+    data.total_cost = getTotalCost();
+    data.money_earned_in_one_day = data.hourly_wage * 8;
+  }
+
+	function getTotalCost() {
+    var totalCost = 0;
+		for (var i = 0; i < data.purchases.length; i++) {
+		    totalCost += parseInt(data.purchases[i].price);;
+		}
+		return totalCost;
+	}
+
+</script>
+</body>
+</html>
