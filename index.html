@@ -18,73 +18,87 @@
 <body id="data">
 
 	<section>
-		<h1>Your True Hourly wooo Cost</h1>
-		<h3>Your Hourly Wage is : ${data.hourly_wage}</h3>
-		<input type="number" rv-value="data.hourly_wage">
-    <p>Heres some advice</p>
+		<h1>What is your minute value?</h1>
+		<h3>Your Minute Wage is : ${data.minute_wage}</h3>
+		<input type="number" rv-value="data.minute_wage">
 	</section>
 
 	<section>
 	 	<h1>Your purchases</h1>
   		<div rv-each-purchase="data.purchases">
-  			<input rv-value="purchase.name" type="text"> 
         $ <input rv-value="purchase.price" type="number"> 
   			Type : <input rv-value="purchase.type" type="text"> 
+        <button onclick="deletePurchase(this)" rv-data-index="index">Delete</button>
   		</div>
+
+      <p>New Purchase</p>
+      $ <input type="number" id="newPurchaseAmount"> 
+      Type : <input type="text" id="newPurchaseType"> 
+      <button onclick="addPurchase()">Add</button>
 	</section>
 
 	<section>
-	 	<h1>Time spent</h1>
     <button onclick="calculate_hours()">Calculate Time Spent</button>
-    <p>{data.total_hours_spent} hours of your life for ${data.total_cost} worth of stuff. In one working day you would make ${data.money_earned_in_one_day}</p>
+    <h1>You spent {data.total_mins_spent}mins of your ultimate resource</h1>
+
 	</section>
 
 
 <script>
 
     var data = {
-    hourly_wage: 20,
-    money_earned_in_one_day: 0,
+    minute_wage: 0.33,
 
-    total_hours_spent: 0,
-    total_cost: 0,
+    total_mins_spent: 0,
 
     purchases: [
       {
-        name: 'lollipop',
         price: 0.5,
-        type: 'test'
+        type: 'coffee'
       },
       {
-        name: 'teakettle',
         price: 14.95,
-        type: 'test'
+        type: 'bill'
       },
       {
-        name: 'magic stick',
         price: 89.12,
-        type: 'test'
+        type: 'coffee'
       },
       {
-        name: 'low rider',
         price: 900,
-        type: 'test'
+        type: 'fun'
       },
       {
-        name: 'champagne',
         price: 45,
-        type: 'test'
+        type: 'etc'
       }
     ]};
 
   rivets.bind($('#data'), {data: data});
 
-  function calculate_hours(){
-    data.total_hours_spent = getTotalCost() / data.hourly_wage;
-    data.total_cost = getTotalCost();
-    data.money_earned_in_one_day = data.hourly_wage * 8;
+  function deletePurchase(button){
+    var index = button.dataset.index;
+    console.log(index);
+    data.purchases.splice( index, 1 );
+    console.log(data.purchases);
   }
 
+  function addPurchase(){
+    var ammount = $("#newPurchaseAmount").val();
+    var type = $("#newPurchaseType").val();
+    var newPurchaseObject = {price: ammount, type: type};
+    console.log(newPurchaseObject);
+    data.purchases.push(newPurchaseObject);
+  }
+
+  function calculate_hours(){
+    data.total_mins_spent = getTotalCost() / data.minute_wage;
+    // data.total_cost = getTotalCost();
+    // data.money_earned_in_one_day = data.minute_wage * 8;
+  }
+
+
+  /* Deprecated*/
 	function getTotalCost() {
     var totalCost = 0;
 		for (var i = 0; i < data.purchases.length; i++) {
