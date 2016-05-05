@@ -19,6 +19,10 @@
 
 	<section>
 		<h1>What is your minute value?</h1>
+    Your last Paid Amount <input id="lastPaid" type="number">
+    Hours Worked <input id="hoursWorked" type="number">
+    <button onclick="calculateMinuteWage()">Calculate</button>
+
 		<h3>Your Minute Wage is : ${data.minute_wage}</h3>
 		<input type="number" rv-value="data.minute_wage">
 	</section>
@@ -38,8 +42,14 @@
 	</section>
 
 	<section>
-    <button onclick="calculate_hours()">Calculate Time Spent</button>
+    <button onclick="calculate_mins()">Calculate Time Spent</button>
     <h1>You spent {data.total_mins_spent}mins of your ultimate resource</h1>
+    
+    <div rv-each-time="data.timeArray">
+        <p>You spent {time.mins} minutes of your life on {time.type}</p>
+    </div>
+
+
 
 	</section>
 
@@ -53,7 +63,7 @@
 
     purchases: [
       {
-        price: 0.5,
+        price: 12,
         type: 'coffee'
       },
       {
@@ -61,41 +71,86 @@
         type: 'bill'
       },
       {
-        price: 89.12,
+        price: 4,
         type: 'coffee'
       },
       {
-        price: 900,
+        price: 30,
         type: 'fun'
       },
       {
         price: 45,
         type: 'etc'
       }
-    ]};
+    ],
+
+    pricesByType: {},
+
+    timeArray: []
+
+  };
 
   rivets.bind($('#data'), {data: data});
 
   function deletePurchase(button){
     var index = button.dataset.index;
-    console.log(index);
     data.purchases.splice( index, 1 );
-    console.log(data.purchases);
   }
 
   function addPurchase(){
     var ammount = $("#newPurchaseAmount").val();
     var type = $("#newPurchaseType").val();
     var newPurchaseObject = {price: ammount, type: type};
-    console.log(newPurchaseObject);
     data.purchases.push(newPurchaseObject);
   }
 
-  function calculate_hours(){
-    data.total_mins_spent = getTotalCost() / data.minute_wage;
-    // data.total_cost = getTotalCost();
-    // data.money_earned_in_one_day = data.minute_wage * 8;
+  function calculateMinuteWage(){
+    var minsWorked = +$("#hoursWorked").val() * 60;
+    data.minute_wage = $("#lastPaid").val() / minsWorked
   }
+
+
+
+  function calculate_mins(){
+    // Calculate total mins
+    data.total_mins_spent = getTotalCost() / data.minute_wage;
+
+    //Calculate by type
+    data.pricesByType = {};
+
+    data.purchases.forEach(function(p){
+        var type = p.type;
+
+        var oldPrice = data.pricesByType[type];
+        var price;
+        if(isNaN(oldPrice)){
+          var price = +p.price;
+        }else{
+          var price = +oldPrice + +p.price;
+        }
+        console.log(price);
+
+        data.pricesByType[type] = price;
+    });
+
+    makeTimesArray();
+  }
+
+  function makeTimesArray(){ 
+    data.timeArray = [];
+
+    for (var key in data.pricesByType) {
+      var price = data.pricesByType[key];
+      var mins = priceToMins(price);
+      var time = {mins: mins, type: key};
+      data.timeArray.push(time);
+    }
+  }
+
+  function priceToMins(price){
+    return price / data.minute_wage;
+  }
+
 
 
   /* Deprecated*/
