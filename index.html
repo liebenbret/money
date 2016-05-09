@@ -60,7 +60,8 @@
     <h1>You spent {data.total_mins_spent}mins of your ultimate resource</h1>
     
     <div rv-each-time="data.timeArray">
-        <p>You spent {time.mins} minutes of your life on {time.type}</p>
+        <p>You spent {time.mins} minutes of your ultimate resource {time.type}</p>
+        
     </div>
 
 
@@ -77,8 +78,8 @@
 
     purchases: [
       {
-        price: ,
-        type: ''
+        price: 12,
+        type: 'coffee'
       },
       {
         price: 14.95,
