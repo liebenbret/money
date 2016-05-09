@@ -18,33 +18,36 @@
 <body id="data">
 
 	<section>
-		<h1>Money is time</h1>
-    	<h2>what is your ultamite</h2>
+		<h1>money is time</h1>
+    	<h2>what is your ultamate resource worth ?</h2>
 	</section>
 
 
 	<section>
-		<h1>About</h1>
-   		<p>wooooo</p>
+		<h1>about</h1>
+		<h2> When you pay for something, you not just conducting a monetary exchange, but exchanging the time you spent working for that money.</h2>
+   		<p>Money is time - it is your ultimate limited resource. Input your income and hours which you have worked to earn this income to define your hourly wage. When you make a purchase, you are actually trading in time which you had spent earning that income. Here you will explore how your time is spent -your time is limited, how do you choose to spend this time?</p>
 	</section>
 
 	<section>
-		<h1>Money is time </h1>
-    Your last Paid Amount <input id="lastPaid" type="number">
+		<h1>what is your minute value?</h1>
+    last Paid Amount <input id="lastPaid" type="number">
     Hours Worked <input id="hoursWorked" type="number">
     <button onclick="calculateMinuteWage()">Calculate</button>
+    <p1>In the box above, place the dollar amount which you were last paid, followed by the number of hours which you had worked for this dollar amount. This will create your hourly value below.</p1>
 
-		<h3>Your Minute Wage is : ${data.minute_wage}</h3>
+		<h3>your Minute value: ${data.minute_wage}</h3>
 		<input type="number" rv-value="data.minute_wage">
 	</section>
 
 	<section>
-	 	<h1>Your purchases</h1>
+	 	<h1>log your weekly purchases</h1>
   		<div rv-each-purchase="data.purchases">
         $ <input rv-value="purchase.price" type="number"> 
   			Type : <input rv-value="purchase.type" type="text"> 
         <button onclick="deletePurchase(this)" rv-data-index="index">Delete</button>
   		</div>
+  		<p1>In the box above, place the dollar amount that you paid for a purchase, hitting the plus symbol to log multiple purchases. This will be interperated  as your new vaule in which to trade in.</p1>
 
       <p>New Purchase</p>
       $ <input type="number" id="newPurchaseAmount"> 
@@ -68,30 +71,30 @@
 <script>
 
     var data = {
-    minute_wage: 0.33,
+    minute_wage: 0.00,
 
     total_mins_spent: 0,
 
     purchases: [
       {
-        price: 12,
-        type: 'coffee'
+        price: ,
+        type: ''
       },
       {
-        price: 14.95,
-        type: 'bill'
+        price: ,
+        type: ''
       },
       {
-        price: 4,
-        type: 'coffee'
+        price: ,
+        type: ''
       },
       {
-        price: 25,
-        type: 'fun'
+        price: ,
+        type: ''
       },
       {
-        price: 45,
-        type: 'etc'
+        price: ,
+        type: ''
       }
     ],
 
