@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Page Title</title>
+
+	<!-- Responsive friendly viewport settings -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Style sheet link -->
+	<link href="codes/main.css" rel="stylesheet" media="all">
+
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+	<script src="codes/jquery.min.js" type="text/javascript"></script>
+  <script src="codes/rivets.bundled.min.js" type="text/javascript"></script>
+</head>
+<body id="data">
+
+	<section>
+		<h1>money is time</h1>
+    	<h2>what is your ultamate resource worth ?</h2>
+	</section>
+
+
+	<section>
+		<h1>about</h1>
+		<h2> When you pay for something, you not just conducting a monetary exchange, but exchanging the time you spent working for that money.</h2>
+   		<p>Money is time - it is your ultimate limited resource. Input your income and hours which you have worked to earn this income to define your hourly wage. When you make a purchase, you are actually trading in time which you had spent earning that income. Here you will explore how your time is spent -your time is limited, how do you choose to spend this time?</p>
+	</section>
+
+	<section>
+		<h1>what is your minute value?</h1>
+    last Paid Amount <input id="lastPaid" type="number">
+    Hours Worked <input id="hoursWorked" type="number">
+    <button onclick="calculateMinuteWage()">Calculate</button>
+    <p1>In the box above, place the dollar amount which you were last paid, followed by the number of hours which you had worked for this dollar amount. This will create your hourly value below.</p1>
+
+		<h3>your Minute value: ${data.minute_wage}</h3>
+		<input type="number" rv-value="data.minute_wage">
+	</section>
+
+	<section>
+	 	<h1>log your weekly purchases</h1>
+  		<div rv-each-purchase="data.purchases">
+        $ <input rv-value="purchase.price" type="number"> 
+  			Type : <input rv-value="purchase.type" type="text"> 
+        <button onclick="deletePurchase(this)" rv-data-index="index">Delete</button>
+  		</div>
+  		<p1>In the box above, place the dollar amount that you paid for a purchase, hitting the plus symbol to log multiple purchases. This will be interperated  as your new vaule in which to trade in.</p1>
+
+      <p>New Purchase</p>
+      $ <input type="number" id="newPurchaseAmount"> 
+      Type : <input type="text" id="newPurchaseType"> 
+      <button onclick="addPurchase()">Add</button>
+	</section>
+
+	<section>
+    <button onclick="calculate_mins()">Calculate Time Spent</button>
+    <h1>You spent {data.total_mins_spent}mins of your ultimate resource on</h1>
+    
+    <div rv-each-time="data.timeArray">
+        <p>You spent {time.mins} minutes of your ultimate resource on {time.type}</p>
+    </div>
+    <p2> The boxes above represent the minutes which you have spent on your weekly purchases. The minutes here represent the exchanges you were willing to make for you life.</p2>
+     <h2> Are you happy with how you spent your time?</h2>
+
+
+
+	</section>
+
+
+<script>
+
+    var data = {
+    minute_wage: 0.33,
+
+    total_mins_spent: 0,
+
+    purchases: [
+      {
+        price: 12,
+        type: 'coffee'
+      },
+      {
+        price: 14.95,
+        type: 'bill'
+      },
+      {
+        price: 4,
+        type: 'coffee'
+      },
+      {
+        price: 25,
+        type: 'fun'
+      },
+      {
+        price: 45,
+        type: 'etc'
+      }
+    ],
+
+    pricesByType: {},
+
+    timeArray: []
+
+  };
+
+  rivets.bind($('#data'), {data: data});
+
+  function deletePurchase(button){
+    var index = button.dataset.index;
+    data.purchases.splice( index, 1 );
+  }
+
+  function addPurchase(){
+    var ammount = $("#newPurchaseAmount").val();
+    var type = $("#newPurchaseType").val();
+    var newPurchaseObject = {price: ammount, type: type};
+    data.purchases.push(newPurchaseObject);
+  }
+
+  function calculateMinuteWage(){
+    var minsWorked = +$("#hoursWorked").val() * 60;
+    data.minute_wage = $("#lastPaid").val() / minsWorked
+  }
+
+
+
+  function calculate_mins(){
+    // Calculate total mins
+    data.total_mins_spent = getTotalCost() / data.minute_wage;
+
+    //Calculate by type
+    data.pricesByType = {};
+
+    data.purchases.forEach(function(p){
+        var type = p.type;
+
+        var oldPrice = data.pricesByType[type];
+        var price;
+        if(isNaN(oldPrice)){
+          var price = +p.price;
+        }else{
+          var price = +oldPrice + +p.price;
+        }
+        console.log(price);
+
+        data.pricesByType[type] = price;
+    });
+
+    makeTimesArray();
+  }
+
+  function makeTimesArray(){ 
+    data.timeArray = [];
+
+    for (var key in data.pricesByType) {
+      var price = data.pricesByType[key];
+      var mins = priceToMins(price);
+      var time = {mins: mins, type: key};
+      data.timeArray.push(time);
+    }
+  }
+
+  function priceToMins(price){
+    return price / data.minute_wage;
+  }
+
+
+
+  /* Deprecated*/
+	function getTotalCost() {
+    var totalCost = 0;
+		for (var i = 0; i < data.purchases.length; i++) {
+		    totalCost += parseInt(data.purchases[i].price);;
+		}
+		return totalCost;
+	}
+
+</script>
+</body>
+</html>
