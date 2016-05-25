@@ -1,0 +1,94 @@
+/*styles by ojasya */
+body{
+	background: #1C2127;
+	color:#ffffff;
+	text-align: center;
+}
+
+.tagline,.about{
+	text-align: center;
+	border-bottom:30px solid #6B8295;
+}
+.tagline h1,.tagline h2{
+	margin: 0 0 10px;
+	padding: 15px 5px;
+}
+.tagline h1{
+	background: #B2D1CE;
+}
+.tagline h2{
+	background: #A6BAD8;
+}
+
+.about h3{
+	background: #B2D1CE;
+	padding: 10px 5px;
+	color:#000000;
+	margin: 0;
+}
+.strip-div{
+	background: #A5BAD8;
+	padding: 15px 5px;
+	margin: 0 0 10px;
+	color:#000000;
+}
+
+.dark-strip{
+	background: #6B8295;
+	padding: 15px 5px;
+	color:#ffffff;
+}
+input{
+	border:1px solid #000;
+	background: rgba(0,0,0,0.4);
+	color:#F9E864;
+	font-size: 20px;
+	max-width: 150px;
+}
+.new-purchage{
+	background: #B2D1CE;
+	padding: 10px 5px 15px 5px;
+	border-bottom:30px solid #6B8295;
+	color: #000000;
+}
+.minute-val h3{
+	margin: 0 0 10px;
+}
+.minute-val button{
+	padding: 8px 12px;
+	margin: 30px 0 15px;
+}
+
+.total-time button{
+	padding: 10px 12px;
+	margin-bottom: 20px;
+}
+.total-time .strip-div p{
+	padding-left: 15px;
+	padding-right: 15px;
+	text-align: left;
+}
+.total-time span.yellow{
+	color:#F9E864;
+	font-size: 18px;
+	font-weight: bold;
+}
+button{
+	background: #FFCC33;
+	text-transform: uppercase;
+	box-shadow: none;
+	font-weight: bold;
+	border:none;
+}
+.weekly-purchage span{
+	margin-right: 15px;
+}
+
+@media(max-width: 480px){
+	.weekly-purchage input{
+		margin-bottom: 10px;
+	}
+	.weekly-purchage span{
+		display: block;
+	}
+}

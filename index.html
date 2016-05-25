@@ -9,7 +9,7 @@
 
 	<!-- Style sheet link -->
 	<link href="codes/main.css" rel="stylesheet" media="all">
-
+  <link href="style.css" rel="stylesheet" media="all">
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
 	<script src="codes/jquery.min.js" type="text/javascript"></script>
@@ -17,55 +17,60 @@
 </head>
 <body id="data">
 
-	<section>
-		<h1>money is time</h1>
+	<section class="tagline">
+		  <h1>money is time</h1>
     	<h2>what is your ultamate resource worth ?</h2>
 	</section>
 
 
-	<section>
+	<section class="about">
 		<h1>about</h1>
-		<h2> When you pay for something, you not just conducting a monetary exchange, but exchanging the time you spent working for that money.</h2>
+		<h3> When you pay for something, you not just conducting a monetary exchange, but exchanging the time you spent working for that money.</h3>
    		<p>Money is time - it is your ultimate limited resource. Input your income and hours which you have worked to earn this income to define your hourly wage. When you make a purchase, you are actually trading in time which you had spent earning that income. Here you will explore how your time is spent -your time is limited, how do you choose to spend this time?</p>
 	</section>
 
-	<section>
+	<section class="minute-val">
 		<h1>what is your minute value?</h1>
-    last Paid Amount <input id="lastPaid" type="number">
-    Hours Worked <input id="hoursWorked" type="number">
+    <div class="strip-div">last Paid Amount <input id="lastPaid" type="number"></div>
+    <div class="strip-div">Hours Worked <input id="hoursWorked" type="number"></div>
     <button onclick="calculateMinuteWage()">Calculate</button>
-    <p1>In the box above, place the dollar amount which you were last paid, followed by the number of hours which you had worked for this dollar amount. This will create your hourly value below.</p1>
+    <p>In the box above, place the dollar amount which you were last paid, followed by the number of hours which you had worked for this dollar amount. This will create your hourly value below.</p>
 
-		<h3>your Minute value: ${data.minute_wage}</h3>
-		<input type="number" rv-value="data.minute_wage">
+		<div class="dark-strip">
+      <h3>your Minute value: ${data.minute_wage | dollar}</h3>
+		  <input type="number" rv-value="data.minute_wage | dollar">
+    </div>
 	</section>
 
-	<section>
+	<section class="weekly-purchage">
 	 	<h1>log your weekly purchases</h1>
-  		<div rv-each-purchase="data.purchases">
-        $ <input rv-value="purchase.price" type="number"> 
-  			Type : <input rv-value="purchase.type" type="text"> 
+  		<div class="strip-div" rv-each-purchase="data.purchases">
+        <span>$ <input rv-value="purchase.price" type="number"> </span>
+  			<span>Type : <input rv-value="purchase.type" type="text"> </span>
         <button onclick="deletePurchase(this)" rv-data-index="index">Delete</button>
   		</div>
-  		<p1>In the box above, place the dollar amount that you paid for a purchase, hitting the plus symbol to log multiple purchases. This will be interperated  as your new vaule in which to trade in.</p1>
+  		<p>In the box above, place the dollar amount that you paid for a purchase, hitting the plus symbol to log multiple purchases. This will be interperated  as your new vaule in which to trade in.</p>
 
-      <p>New Purchase</p>
-      $ <input type="number" id="newPurchaseAmount"> 
-      Type : <input type="text" id="newPurchaseType"> 
-      <button onclick="addPurchase()">Add</button>
+      <div class="new-purchage">
+        <p>New Purchase</p>
+        <span>$ <input type="number" id="newPurchaseAmount"> </span>
+        <span>Type : <input type="text" id="newPurchaseType"></span> 
+        <button onclick="addPurchase()">Add</button>
+      </div>
+
 	</section>
 
-	<section>
+	<section class="total-time">
     <button onclick="calculate_mins()">Calculate Time Spent</button>
-    <h1>You spent {data.total_mins_spent}mins of your ultimate resource on</h1>
+    <h1>You spent {data.total_mins_spent | min}mins of your ultimate resource on</h1>
     
-    <div rv-each-time="data.timeArray">
-        <p>You spent {time.mins} minutes of your ultimate resource on {time.type}</p>
+    <div class="strip-div" rv-each-time="data.timeArray">
+        <p>
+          You spent <span class="yellow">{time.mins | min}</span> minutes of your ultimate resource on   <span class="yellow">{time.type}</span>
+        </p>
     </div>
     <p2> The boxes above represent the minutes which you have spent on your weekly purchases. The minutes here represent the exchanges you were willing to make for you life.</p2>
      <h2> Are you happy with how you spent your time?</h2>
-
-
 
 	</section>
 
@@ -105,6 +110,16 @@
     timeArray: []
 
   };
+
+  rivets.formatters.dollar = function(value){
+    var n = value.toFixed(2);
+    return n;
+  }
+
+  rivets.formatters.min = function(value){
+    console.log('woo');
+    return parseInt(value);
+  }
 
   rivets.bind($('#data'), {data: data});
 
